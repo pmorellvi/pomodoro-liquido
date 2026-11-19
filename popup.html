@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pomodoro líquido</title>
+    <link rel="stylesheet" href="style.css">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self'; object-src 'none'; connect-src 'none'">
+    <script src="vendor/p5.min.js" defer></script>
+    <script src="js/popup.js" defer></script>
+  </head>
+  <body>
+    <header class="cabecera">
+      <span class="marca" aria-hidden="true"></span>
+      <h1>Pomodoro líquido</h1>
+    </header>
+
+    <nav class="pestanas" aria-label="Secciones">
+      <button id="tab-temporizador" type="button" aria-pressed="true"
+        aria-controls="panel-temporizador" data-pestana="temporizador">Temporizador</button>
+      <button id="tab-sesiones" type="button" aria-pressed="false"
+        aria-controls="panel-sesiones" data-pestana="sesiones">Sesiones</button>
+    </nav>
+
+    <main>
+      <section id="panel-temporizador" aria-labelledby="tab-temporizador">
+        <label for="sesion-activa">Sesión activa</label>
+        <select id="sesion-activa" disabled>
+          <option value="">Crea tu primera sesión</option>
+        </select>
+
+        <div class="temporizador">
+          <div id="contenedor-animacion" class="animacion" aria-hidden="true"></div>
+          <div>
+            <p id="tiempo-restante" class="tiempo" role="timer" aria-label="Tiempo restante">25:00</p>
+            <p id="estado-temporizador" class="etiqueta">Concentración</p>
+            <p class="texto-secundario">Bloque de <span id="duracion-bloque">25</span> min</p>
+          </div>
+        </div>
+        <p id="detalle-temporizador" class="texto-secundario">Crea una sesión para empezar.</p>
+
+        <div class="acciones">
+          <button id="iniciar-pausar" class="principal" type="button" disabled>Iniciar</button>
+          <button id="finalizar" type="button" disabled>Finalizar</button>
+        </div>
+        <p class="resumen">Hoy: <span id="total-hoy">0 min</span> · <span id="bloques-hoy">0 bloques</span></p>
+        <p class="nota">Las pausas y los descansos no suman tiempo de estudio.</p>
+      </section>
+
+      <section id="panel-sesiones" aria-labelledby="tab-sesiones" hidden>
+        <div id="vista-listado">
+          <div class="titulo-seccion">
+            <h2>Tus sesiones</h2>
+            <button id="nueva-sesion" type="button">+ Nueva</button>
+          </div>
+          <p id="sin-sesiones" class="vacio">Crea una sesión para organizar tu tiempo de estudio.</p>
+          <div id="lista-sesiones"></div>
+        </div>
+
+        <div id="vista-formulario" hidden>
+          <button id="volver-sesiones" class="enlace" type="button">‹ Tus sesiones</button>
+          <h2 id="titulo-formulario">Nueva sesión</h2>
+          <form id="formulario-sesion">
+            <label for="nombre-sesion">Nombre</label>
+            <input id="nombre-sesion" name="nombre" type="text" maxlength="60"
+              placeholder="Ej.: Práctica 3" required>
+
+            <div class="campos-duracion">
+              <div>
+                <label for="minutos-concentracion">Concentración (min)</label>
+                <input id="minutos-concentracion" name="concentracion" type="number"
+                  min="1" max="180" step="1" value="25" required>
+              </div>
+              <div>
+                <label for="minutos-descanso">Descanso (min)</label>
+                <input id="minutos-descanso" name="descanso" type="number"
+                  min="1" max="60" step="1" value="5" required>
+              </div>
+            </div>
+            <p class="texto-secundario">Los cambios se aplican al siguiente bloque.</p>
+            <div class="acciones">
+              <button id="cancelar-sesion" type="button">Cancelar</button>
+              <button id="guardar-sesion" class="principal" type="submit">Guardar sesión</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+    <template id="plantilla-sesion">
+      <article class="tarjeta-sesion">
+        <h3 class="nombre-sesion"></h3>
+        <p class="texto-secundario"></p>
+        <div class="acciones-sesion">
+          <button type="button" class="usar">Usar</button>
+          <button type="button" class="editar">Editar</button>
+        </div>
+      </article>
+    </template>
+    <p id="mensaje" class="mensaje" role="status" aria-live="polite" hidden></p>
+  </body>
+</html>
